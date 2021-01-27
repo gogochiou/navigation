@@ -1,0 +1,5 @@
+<launch>
+  <!--goal_pose-->
+  <node pkg="robot_setup_tf" name = "goal_pose" type = "goal_pose"  output="screen" >
+  </node>
+</launch>
