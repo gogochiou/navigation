@@ -1,0 +1,41 @@
+<launch>
+  <!-- Arguments -->
+  <arg name="model" default="$(env TURTLEBOT3_MODEL)" doc="model type [burger, waffle, waffle_pi]"/>
+  <!--<arg name="map_file" default="$(find turtlebot3_navigation)/maps2/map2.yaml"/> -->
+   <arg name="map_file" default="$(find turtlebot3_navigation)/maps/map.yaml"/>
+  <arg name="open_rviz" default="true"/>
+  <arg name="move_forward_only" default="false"/>
+
+  <!-- Turtlebot3
+  <include file="$(find turtlebot3_bringup)/launch/turtlebot3_remote.launch">
+    <arg name="model" value="$(arg model)" />
+  </include>  -->
+
+  <node pkg="tf" type="static_transform_publisher" name="map_odom_broadcaster"  args="0 0 0 0 0 0 map odom 100"/> 
+  <node pkg="testbot" name = "odom_integral" type = "odom_integral"  output="screen" />
+
+  <!-- Map server -->
+  <node pkg="map_server" name="map_server" type="map_server" args="$(arg map_file)"/>
+
+  <!-- AMCL-->
+  <!-- <include file="$(find turtlebot3_navigation)/launch/amcl.launch"/>  -->
+
+
+  <!-- move_base -->
+  <include file="$(find turtlebot3_navigation)/launch/move_base.launch">
+    <arg name="model" value="$(arg model)" />
+    <arg name="move_forward_only" value="$(arg move_forward_only)"/>
+  </include>
+
+  <!-- rviz -->
+  <group if="$(arg open_rviz)"> 
+    <node pkg="rviz" type="rviz" name="rviz" required="true"
+          args="-d $(find turtlebot3_navigation)/rviz/turtlebot3_navigation.rviz"/>
+  </group>
+<!--
+  <node pkg="tf" type="static_transform_publisher" name="wheel_left"  args="0 0.08 0.023 90 274 90 base_link wheel_left_link 100"/> 
+  <node pkg="tf" type="static_transform_publisher" name="wheel_right"  args="0 -0.08 0.023 0 2.8 26.54 base_link wheel_right_link 100"/> 
+
+-->  
+
+</launch>

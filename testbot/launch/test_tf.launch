@@ -1,0 +1,9 @@
+<!-- 測試odom的程式是否正確-->
+<launch>
+  <!-- odometry_test -->
+  <node pkg="testbot" name = "odometry_test" type = "odometry_test"  output="screen" >
+  </node>
+    <node pkg="testbot" name = "rxST1" type = "rxST1"  output="screen" >
+  </node>
+
+</launch>
